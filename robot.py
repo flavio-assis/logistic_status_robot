@@ -7,26 +7,21 @@ import json
 
 import pandas as pd
 import requests
+from config import *
+
 
 import time
+
+
+## print 1
+print('start')
 
 test = True
 pd.options.mode.chained_assignment = None
 
 start = time.time()
 log_path = 'files/log.txt'
-drive_path = 'G:/Shared drives/Telecom/PRODUTOS TELECOM/CONTROLE DE CHIPS/LOGISTIC STATUS - FILES'
-
-CLIENT_APP_KEY = os.getenv('TOTH_API_CLIENT')
-CLIENT_SECRET_KEY = os.getenv('TOTH_API_KEY')
-TOTH_URL = os.getenv('TOTH_URL')
-LOGISTIC_TOKEN = os.getenv('LOGISTIC_KEY')
-LOGISTIC_URL = os.getenv('LOGISTIC_URL')
-WKF_URL = os.getenv('WKF_URL_STG')
-WKF_USER = os.getenv('WKF_USER')
-WKF_PASS = os.getenv('WKF_PASS')
-TELECOM_API_URL  = os.getenv('TELECOM_API_URL')
-TELECOM_API_TOKEN  = os.getenv('TELECOM_API_TOKEN')
+drive_path = 'files/updates/'
 
 
 today_str = date.today().strftime("%Y-%m-%d")
@@ -117,20 +112,15 @@ def telecom_request(ccid: object, TELECOM_API_URL: object, TELECOM_API_TOKEN: ob
 
     querystring = {"ccid": ccid}
     headers = {
-        'Content-Type': "application/json",
-        'Authorization': f"Bearer {TELECOM_API_TOKEN}",
-        'User-Agent': "PostmanRuntime/7.15.0",
-        'Accept': "*/*",
-        'Cache-Control': "no-cache",
-        'Postman-Token': "844cbc67-7e59-4003-aea1-ccb82745d4a4,410aa5f2-2d66-4352-b58c-8b5b03031dcc",
-        'Host': "tdam2-stone-app.eastus2.azurecontainer.io:5000",
-        'accept-encoding': "gzip, deflate",
-        'Connection': "keep-alive",
-        'cache-control': "no-cache"
+        'Authorization': f'"Bearer {TELECOM_API_TOKEN}"'
     }
+
+    ## print bonus 
+    print(headers['Authorization'])
 
     try:
         request_telecom = requests.request("GET", TELECOM_API_URL, headers=headers, params=querystring)
+        print(request_telecom.text)
         status = json.loads(request_telecom.text)['data']['STATUS']
     except:
         status = None
@@ -163,6 +153,10 @@ payload = {
     "date_start": yesterday_str,
     "completed": True
 }
+
+
+## print 2
+print('request wkf')
 
 response_wkf = requests.get(url=LOGISTIC_URL, headers=wkf_headers, params=payload)
 response_dict = json.loads(response_wkf.text)
@@ -235,15 +229,23 @@ troca_df_desinst = troca_ccids_desinst[['ccid', 'logistic_status', 'customer', '
 
 frames = [instalacao_df, desinstalacao_df, troca_df_inst, troca_df_desinst]
 
+
 daily_log = pd.concat(frames, sort=False)
 
-validated_daily_log = validate_sim(daily_log, TELECOM_API_URL, TELECOM_API_TOKEN)
 
-validated_daily_log = validated_daily_log.loc[validated_daily_log['telecom_status'].notnull()]
-validated_daily_log = validated_daily_log.loc[~validated_daily_log['telecom_status'].isin(['CANCELLED', 'SUSPENDED'])]
+## print 3
+print('api de telecom')
+
+validated_daily_log = daily_log
+#validated_daily_log = validate_sim(daily_log, TELECOM_API_URL, TELECOM_API_TOKEN)
+
+#validated_daily_log = validated_daily_log.loc[validated_daily_log['telecom_status'].notnull()]
+#validated_daily_log = validated_daily_log.loc[~validated_daily_log['telecom_status'].isin(['CANCELLED', 'SUSPENDED'])]
+
 
 
 daily_log_wkf = change_status(df=validated_daily_log, WKF_URL=WKF_URL, WKF_USER=WKF_USER, WKF_PASS=WKF_PASS)
+
 
 daily_log_wkf.to_csv(drive_path+f"/{today_str}_logistic_status_update.csv", index=False)
 

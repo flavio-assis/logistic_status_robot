@@ -1,11 +1,10 @@
-import os
-
-CLIENT_APP_KEY = os.getenv('TOTH_API_CLIENT')
-CLIENT_SECRET_KEY = os.getenv('TOTH_API_KEY')
-TOTH_URL = os.getenv('TOTH_URL')
-LOGISTIC_TOKEN = os.getenv('LOGISTIC_KEY')
-LOGISTIC_URL = os.getenv('LOGISTIC_URL')
-WKF_URL = os.getenv('WKF_URL_PRD')
-WKF_USER = os.getenv('WKF_USER')
-WKF_PASS = os.getenv('WKF_PASS')
-
+CLIENT_APP_KEY = "d3234a0c-519d-433a-93ff-0d7a592b914d"
+CLIENT_SECRET_KEY = "M2VhNjBjZjYtZThhNi00MjYxLWFlNjktZDZlYzVhZDJjZmE2"
+TOTH_URL = "https://ml-api.stone.com.br:4040/api/toth/v1/ping/last-valid"
+LOGISTIC_TOKEN = "logapi;sdj42SDj19fkhsFSASimhf324sSASFQ"
+LOGISTIC_URL = "https://log-analytics-api.herokuapp.com/service-orders-within-interval"
+WKF_URL = "https://stone.workfinity.com.br/Integration/WKFServiceLogistic.svc"
+WKF_USER = "Telecom"
+WKF_PASS = "2017@Telecom"
+TELECOM_API_URL  = "https://ml-api.stone.com.br:4040/api/toth/v1/ping/last-valid" 
+TELECOM_API_TOKEN  = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2VtYWlsIjoiZmxhdmlvLmFzc2lzQHN0b25lLmNvbS5iciJ9.Z0X4rAW-Edu2EbZCLaENZU-rJYY9A5HqfPCftECnFXUYMV6KIV9iX2DE6DuYMHSjrwJSJMw_DKiAnBQLpvv6hA"
