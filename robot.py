@@ -12,10 +12,6 @@ from config import *
 
 import time
 
-
-## print 1
-print('start')
-
 test = True
 pd.options.mode.chained_assignment = None
 
@@ -80,17 +76,18 @@ def wkf_request(ccid: object, WKF_URL: object, WKF_USER: object, WKF_PASS: objec
 
 
     headers_wkf = {
-        'Content-Type': "text/xml",
-        'SOAPAction': "http://tempuri.org/IWKFServiceLogistic/WSAtualizaEstoque",
-        'User-Agent': "PostmanRuntime/7.13.0",
-        'Accept': "*/*",
-        'Cache-Control': "no-cache",
-        'Postman-Token': "77ae63a5-f8f7-4f76-9beb-d5e8eb576c08,f5f95d29-5a80-413c-afcf-72af343039b1",
-        'Host': "workfinitystonews.azurewebsites.net",
-        'accept-encoding': "gzip, deflate",
-        'content-length': "849",
-        'Connection': "keep-alive",
-        'cache-control': "no-cache"
+    'Content-Type': "text/xml",
+    'SOAPAction': "http://tempuri.org/IWKFServiceLogistic/WSAtualizaEstoque",
+    'User-Agent': "PostmanRuntime/7.15.0",
+    'Accept': "*/*",
+    'Cache-Control': "no-cache",
+    'Postman-Token': "5a98cf90-b1f7-4b8b-95e8-40d8402fb6a7,7f557e3a-58da-4c81-b82a-06b4c679d48b",
+    'Host': "stonehomolog.workfinity.com.br",
+    'cookie': "ARRAffinity=cc062a4b498a6ad3092667648d5e8a1916be69ee32c702149530617aaae6d852",
+    'accept-encoding': "gzip, deflate",
+    'content-length': "936",
+    'Connection': "keep-alive",
+    'cache-control': "no-cache"
     }
 
     request_wkf = requests.request("POST", WKF_URL, data=wkf_payload.encode('utf-8'), headers=headers_wkf, params=querystring)
@@ -114,9 +111,6 @@ def telecom_request(ccid: object, TELECOM_API_URL: object, TELECOM_API_TOKEN: ob
     headers = {
         'Authorization': f'"Bearer {TELECOM_API_TOKEN}"'
     }
-
-    ## print bonus 
-    print(headers['Authorization'])
 
     try:
         request_telecom = requests.request("GET", TELECOM_API_URL, headers=headers, params=querystring)
@@ -154,9 +148,6 @@ payload = {
     "completed": True
 }
 
-
-## print 2
-print('request wkf')
 
 response_wkf = requests.get(url=LOGISTIC_URL, headers=wkf_headers, params=payload)
 response_dict = json.loads(response_wkf.text)
